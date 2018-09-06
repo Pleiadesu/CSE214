@@ -42,9 +42,8 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         }
         return new Poly(newCoef);
     }
-    public Poly del(Poly that) { 
-        Ring thatCoef = that.mul(new Poly(new Field[]{-1}));
-        return (Poly)this.add(thatCoef);
+    public Poly del(Poly that) {
+        return (Poly)this.add(that.addInverse());
     }
     public Ring mul(Ring a) {
         Poly that = (Poly)a;
@@ -65,10 +64,10 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         int dd = that.coef.length - 1; 
         
         //quotient
-        Field[] q = new Field[this.coef.length - that.coef.length + 1]; 
+        F[] q = (F[])new Field[this.coef.length - that.coef.length + 1]; 
         
         //remainder
-        Field[] r = new Field[this.coef.length];  
+        F[] r = (F[])new Field[this.coef.length];  
         
         //copy coef to r
         for(int i = 0; i < this.coef.length; i++)
@@ -90,10 +89,10 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         return new Poly[] {new Poly(q), new Poly(r)};
     }
     public Ring addIdentity() {
-        return new Poly(new Field[]{});
+        return new Poly((F[])(new Field[]{}));
     }
     public Ring addInverse() {
-        return this.mul(new Poly(new Field[]{-1}));
+        return this.mul(new Poly((F[])(new Field[]{-1})));
     }
     public Ring mod(Ring a) {
         return this.longdiv((Poly)a)[1];
@@ -103,7 +102,7 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     }//quotient
     public boolean ge(Ordered a){   //greater than or equal to
         Poly tempA = (Poly)a;
-        Field[] aCoef = tempA.getCoef();
+        F[] aCoef = (F[])(tempA.getCoef());
         Poly tempPoly = this.del(tempA);
         if(tempPoly.getCoef().length == 0){
                 return true;
