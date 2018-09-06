@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Euclidean
+comment1.params=a\ b
+comment1.target=Ring\ euclidean(Ring,\ Ring)
+comment2.params=a\ b
+comment2.target=Ring\ GCD(Ring,\ Ring)
+comment3.params=a\ b
+comment3.target=Ring\ LCM(Ring,\ Ring)
+numComments=4

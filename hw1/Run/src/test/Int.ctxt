@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=Int
+comment1.params=n
+comment1.target=Int(int)
+comment2.params=
+comment2.target=int\ getInt()
+comment3.params=a
+comment3.target=test.Ring\ add(test.Ring)
+comment4.params=
+comment4.target=test.Ring\ addIdentity()
+comment5.params=
+comment5.target=test.Ring\ addInverse()
+comment6.params=a
+comment6.target=test.Ring\ mul(test.Ring)
+comment7.params=a
+comment7.target=test.Ring\ mod(test.Ring)
+comment8.params=a
+comment8.target=test.Ring\ quo(test.Ring)
+comment9.params=a
+comment9.target=boolean\ ge(test.Ordered)
+numComments=10

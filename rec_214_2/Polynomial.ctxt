@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Polynomial
+comment1.params=coef
+comment1.target=Polynomial(double[])
+comment2.params=
+comment2.target=double[]\ getCoef()
+comment3.params=
+comment3.target=java.lang.String\ toString()
+comment4.params=that
+comment4.target=Polynomial\ add(Polynomial)
+comment5.params=that
+comment5.target=void\ del(Polynomial)
+comment6.params=that
+comment6.target=Polynomial\ mul(Polynomial)
+comment7.params=that
+comment7.target=Polynomial[]\ longdiv(Polynomial)
+comment8.params=args
+comment8.target=void\ main(java.lang.String[])
+numComments=9

@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Ring
+comment1.params=a
+comment1.target=test.Ring\ add(test.Ring)
+comment2.params=
+comment2.target=test.Ring\ addIdentity()
+comment3.params=
+comment3.target=test.Ring\ addInverse()
+comment4.params=a
+comment4.target=test.Ring\ mul(test.Ring)
+numComments=5

@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=PolyDbl
+comment1.params=coef
+comment1.target=PolyDbl(double[])
+comment10.params=a
+comment10.target=Ring\ mod(Ring)
+comment11.params=a
+comment11.target=Ring\ quo(Ring)
+comment12.params=a
+comment12.target=boolean\ ge(Ordered)
+comment2.params=
+comment2.target=double[]\ getCoef()
+comment3.params=
+comment3.target=java.lang.String\ toString()
+comment4.params=a
+comment4.target=Ring\ add(Ring)
+comment5.params=that
+comment5.target=PolyDbl\ del(PolyDbl)
+comment6.params=a
+comment6.target=Ring\ mul(Ring)
+comment7.params=that
+comment7.target=PolyDbl[]\ longdiv(PolyDbl)
+comment8.params=
+comment8.target=Ring\ addIdentity()
+comment9.params=
+comment9.target=Ring\ addInverse()
+numComments=13

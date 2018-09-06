@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Rat
+comment1.params=numerator\ denumerator
+comment1.target=Rat(int,\ int)
+comment10.params=
+comment10.target=Ring\ mulInverse()
+comment11.params=
+comment11.target=int\ getNum()
+comment12.params=
+comment12.target=int\ getDenum()
+comment2.params=a
+comment2.target=Ring\ mod(Ring)
+comment3.params=a
+comment3.target=boolean\ ge(Ordered)
+comment4.params=a
+comment4.target=Ring\ add(Ring)
+comment5.params=
+comment5.target=Ring\ addIdentity()
+comment6.params=
+comment6.target=Ring\ addInverse()
+comment7.params=a
+comment7.target=Ring\ mul(Ring)
+comment8.params=a
+comment8.target=Ring\ quo(Ring)
+comment9.params=
+comment9.target=Ring\ mulIdentity()
+numComments=13
