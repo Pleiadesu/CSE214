@@ -79,7 +79,7 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         for(int qi = q.length-1; qi >= 0; qi--) 
         {
             q[qi] = ((Modulo)r[qi + dd]).quo(that.coef[dd]);
-            
+            q[qi] = 
             for(int i = 0; i <= dd; i++)
             {
                 r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i])).addInverse());
@@ -92,7 +92,12 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         return new Poly((F[])(new Field[]{}));
     }
     public Ring addInverse() {
-        return this.mul(new Poly((F[])(new Field[]{-1})));
+        F[] tempCoef = this.coef.clone();
+        tempCoef.getClass().getComponentType();
+        for(int i = 0; i < tempCoef.length; i++){
+            tempCoef[i] = (F)this.coef[i].addInverse();
+        }
+        return new Poly(tempCoef);
     }
     public Ring mod(Ring a) {
         return this.longdiv((Poly)a)[1];
