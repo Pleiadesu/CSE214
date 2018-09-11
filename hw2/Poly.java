@@ -27,8 +27,8 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     }
     public Ring add(Ring a) {
         Poly that = (Poly)a;
-        Field[] thatCoef = that.getCoef();
-        Field[] newCoef, smallerCoef;
+        F[] thatCoef = (F[])(that.getCoef());
+        F[] newCoef, smallerCoef;
         if(this.coef.length >= thatCoef.length){
             newCoef = this.coef.clone();
             smallerCoef = thatCoef.clone();
@@ -47,8 +47,8 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     }
     public Ring mul(Ring a) {
         Poly that = (Poly)a;
-        Field[] thatCoef = that.getCoef();
-        Field[] newCoef = new Field[this.coef.length + thatCoef.length - 1];
+        F[] thatCoef = (F[])(that.getCoef());
+        F[] newCoef = (F[])new Field[this.coef.length + thatCoef.length - 1];
         for(int i = 0; i < this.coef.length; i++){
             for (int j = 0; j < thatCoef.length; j++){
                 newCoef[i+j].add(this.coef[i].mul(thatCoef[j]));
@@ -78,11 +78,11 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         //the long division algorithm
         for(int qi = q.length-1; qi >= 0; qi--) 
         {
-            q[qi] = ((Modulo)r[qi + dd]).quo(that.coef[dd]);
-            q[qi] = 
+            q[qi] = r[qi + dd].mul(that.coef[dd].mulInverse());
+            
             for(int i = 0; i <= dd; i++)
             {
-                r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i])).addInverse());
+                r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i]).addInverse()));
             }
         }
         

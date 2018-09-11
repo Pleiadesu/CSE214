@@ -40,8 +40,8 @@ public class PolyDbl implements Ring, Modulo, Ordered {
         return new PolyDbl(newCoef);
     }
     public PolyDbl del(PolyDbl that) { 
-        Ring thatCoef = that.mul(new PolyDbl(new double[]{-1}));
-        return (PolyDbl)this.add(thatCoef);
+        Ring thatPoly = that.mul(new PolyDbl(new double[]{-1}));
+        return (PolyDbl)this.add(thatPoly);
     }
     public Ring mul(Ring a) {
         PolyDbl that = (PolyDbl)a;
