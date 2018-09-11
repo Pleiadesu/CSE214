@@ -82,7 +82,7 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
             
             for(int i = 0; i <= dd; i++)
             {
-                r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i]).addInverse()));
+                r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i])).addInverse());
             }
         }
         
