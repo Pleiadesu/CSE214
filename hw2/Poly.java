@@ -1,7 +1,7 @@
  
 
-import ring.Comp;
-import ring.Field;
+//import ring.Comp;
+//import ring.Field;
 
 @SuppressWarnings("unchecked")
 public class Poly<F extends Field> implements Ring, Modulo, Ordered {
@@ -20,6 +20,9 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     }
     public String toString() {
         String str = "";
+        if(coef.length == 0){
+            return new String("empty coef");
+        }
         for(int i = coef.length - 1; i > 0; i--)
             str = str + coef[i] + "x^" + i + " + ";
         str = str + coef[0];
@@ -27,19 +30,36 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     }
     public Ring add(Ring a) {
         Poly that = (Poly)a;
-        F[] thatCoef = (F[])(that.getCoef());
-        F[] newCoef, smallerCoef;
+        F[] thatCoef = (F[])that.getCoef();
+        F[] newCoef;
+        //System.out.println("thiscoef length: "+this.coef.length);
+        //System.out.println("thatcoef length: "+thatCoef.length);
+        if(this == this.addIdentity()){
+            return that;
+        }
+        else if(that == this.addIdentity()){
+            return this;
+        }
         if(this.coef.length >= thatCoef.length){
+            //System.out.println("thiscoef >= thatcoef");
             newCoef = this.coef.clone();
-            smallerCoef = thatCoef.clone();
+            for(int i = 0; i < thatCoef.length; i++){
+                //System.out.println("newCoef before: "+newCoef[i]);
+                //System.out.println(this.coef[i]+" added to "+thatCoef[i]+" = "+(F)this.coef[i].add(thatCoef[i]));
+                newCoef[i] = (F)this.coef[i].add(thatCoef[i]);
+                //System.out.println("newCoef after: "+newCoef[i]);
+            }
         }
         else{
+            //System.out.println("thiscoef < thatcoef");
             newCoef = thatCoef.clone();
-            smallerCoef = this.coef.clone();
-        }
-        for(int i = 0; i < smallerCoef.length; i++){
-            newCoef[i].add(smallerCoef[i]);
-        }
+            for(int i = 0; i < this.coef.length; i++){
+                //System.out.println("newCoef before: "+newCoef[i]);
+                //System.out.println(this.coef[i]+" added to "+thatCoef[i]+" = "+(F)this.coef[i].add(thatCoef[i]));
+                newCoef[i] = (F)this.coef[i].add(thatCoef[i]);
+                //System.out.println("newCoef after: "+newCoef[i]);
+            }
+        }       
         return new Poly(newCoef);
     }
     public Poly del(Poly that) {
@@ -49,9 +69,21 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         Poly that = (Poly)a;
         F[] thatCoef = (F[])(that.getCoef());
         F[] newCoef = (F[])new Field[this.coef.length + thatCoef.length - 1];
+        //System.out.println("(mul)this: "+this);
+        //System.out.println("(mul)that: "+that);
+        //System.out.println("(mul)max index: "+(newCoef.length - 1));
         for(int i = 0; i < this.coef.length; i++){
             for (int j = 0; j < thatCoef.length; j++){
-                newCoef[i+j].add(this.coef[i].mul(thatCoef[j]));
+                //System.out.println("(mul)cur i+j: "+(i+j));
+                //System.out.println("(mul)thiscoef[i]: "+this.coef[i]);
+                //System.out.println("(mul)thatcoef[j]: "+thatCoef[j]);
+                //System.out.println("(mul)thiscoef[i] * thatcoef[j]: "+(this.coef[i].mul(thatCoef[j])));
+                if(newCoef[i+j] == null){
+                    newCoef[i+j] = (F)(this.coef[i].mul(thatCoef[j]));
+                }
+                else{
+                    newCoef[i+j] = (F)newCoef[i+j].add(this.coef[i].mul(thatCoef[j]));            
+                }
             }
         }
         return new Poly(newCoef);
@@ -78,24 +110,26 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         //the long division algorithm
         for(int qi = q.length-1; qi >= 0; qi--) 
         {
-            q[qi] = r[qi + dd].mul(that.coef[dd].mulInverse());
+            q[qi] = (F)r[qi + dd].mul(that.coef[dd].mulInverse());
             
             for(int i = 0; i <= dd; i++)
             {
-                r[qi+i] = r[qi+i].add((q[qi].mul(that.coef[i])).addInverse());
+                r[qi+i] = (F)r[qi+i].add((q[qi].mul(that.coef[i])).addInverse());
             }
         }
         
         return new Poly[] {new Poly(q), new Poly(r)};
     }
     public Ring addIdentity() {
+        if(this.coef.length > 0){
+            return new Poly((F[])(new Field[]{(F)this.coef[0].addIdentity()}));
+        }
         return new Poly((F[])(new Field[]{}));
     }
     public Ring addInverse() {
         F[] tempCoef = this.coef.clone();
-        tempCoef.getClass().getComponentType();
         for(int i = 0; i < tempCoef.length; i++){
-            tempCoef[i] = (F)this.coef[i].addInverse();
+            tempCoef[i] = (F)tempCoef[i].addInverse();
         }
         return new Poly(tempCoef);
     }
@@ -108,16 +142,30 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
     public boolean ge(Ordered a){   //greater than or equal to
         Poly tempA = (Poly)a;
         F[] aCoef = (F[])(tempA.getCoef());
-        Poly tempPoly = this.del(tempA);
-        if(tempPoly.getCoef().length == 0){
-                return true;
-        }
-        else if(this.coef.length > aCoef.length){
+        if(this.coef.length > aCoef.length){
+            ////System.out.println("this length is bigger than that");
             return true;
         }
         else if(this.coef.length == aCoef.length){
-            if(Comp.gt(tempPoly.getCoef()[tempPoly.getCoef().length - 1], tempPoly.addIdentity())){
-                return true;
+            boolean temp = true;
+            for(int i = this.coef.length - 1; i >= 0; i--){
+                if(!Comp.eq(this.coef[i], aCoef[i])){
+                    temp = false;
+                }
+            }
+            if(temp){
+                return temp;
+            }
+            for(int i = this.coef.length - 1; i >= 0; i--){
+                ////System.out.println("Checking if "+this.coef[i]+" is bigger than "+aCoef[i]);
+                if(Comp.lt(this.coef[i], aCoef[i])){
+                    ////System.out.println(this+" is smaller than "+tempA);
+                    return false;
+                }
+                else if(Comp.gt(this.coef[i], aCoef[i])){
+                    ////System.out.println(this+" is bigger than "+tempA);
+                    return true;
+                }
             }
         }
         return false;

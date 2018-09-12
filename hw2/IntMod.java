@@ -14,6 +14,9 @@ public class IntMod extends UnitTest implements Field, Ordered {
 		this.m = m;
 		this.mulInv = null;
 	}
+	public String toString(){
+	    return new String(n+"%"+m);
+	}
 
 	public Ring mulInverse() throws ArithmeticException {
 		//TODO: find and return x such that ( x * n ) % m = 1
@@ -44,7 +47,7 @@ public class IntMod extends UnitTest implements Field, Ordered {
 	}
 	public Ring addIdentity() {
 		// TODO Auto-generated method stub
-		return new IntMod(m, m);
+		return new IntMod(0, m);
 	}
 	public Ring addInverse() {
 		// TODO Auto-generated method stub

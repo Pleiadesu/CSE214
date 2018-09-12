@@ -128,7 +128,7 @@ public class UnitTest {
         TestEuclidean(a, b, c);
         System.out.println("TestPolyDbl done");
     }
-    /*
+    
     public static void TestPolyRat() {
         System.out.println("TestPolyRat...");
         Poly<Rat> a = new Poly<Rat>(new Rat[] {new Rat( 1,1), new Rat(2,1), new Rat(1,1)});
@@ -149,5 +149,5 @@ public class UnitTest {
         TestEuclidean(a, b, c);
         System.out.println("TestPolyIntMod done");
     }
-    */
+    
 }
