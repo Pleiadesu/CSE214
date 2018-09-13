@@ -27,9 +27,9 @@ public class Test
         Poly<IntMod> a = new Poly<IntMod>(new IntMod[] {new IntMod( 1,3), new IntMod(2,3), new IntMod(1,3)});
         Poly<IntMod> b = new Poly<IntMod>(new IntMod[] {new IntMod(-1,3), new IntMod(0,3), new IntMod(1,3)});
         Poly<IntMod> c = new Poly<IntMod>(new IntMod[] {new IntMod( 1,3), new IntMod(1,3), new IntMod(1,3)});
-        System.out.println("a is bigger than b: "+a.ge(b));
-        System.out.println("b is bigger than a: "+b.ge(a));
-        System.out.println(new IntMod(-1, 3).ge(new IntMod(0, 3)));
-        System.out.println(new IntMod(0, 3).ge(new IntMod(-1, 3)));
+        System.out.println("a is bigger than c: "+a.ge(c));
+        System.out.println("c is bigger than a: "+c.ge(a));
+        //System.out.println(new IntMod(-1, 3).ge(new IntMod(0, 3)));
+        //System.out.println(new IntMod(0, 3).ge(new IntMod(-1, 3)));
     }
 }
