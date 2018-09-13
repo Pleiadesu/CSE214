@@ -134,11 +134,12 @@ public class Poly<F extends Field> implements Ring, Modulo, Ordered {
         
         return new Poly[] {new Poly(q), new Poly(r)};
     }
-    public Ring addIdentity() { //There will always be an element in Poly, but java throws a tantrum if there isn't at least one return statement outside a conditional
-        if(this.coef.length > 0){
-            return new Poly((F[])(new Field[]{(F)this.coef[0].addIdentity()}));
+    public Ring addIdentity() { //Check if there is an element in coef (just for debugging) before returning addIdentity
+        if(this.coef.length == 0){
+            throw new ArrayIndexOutOfBoundsException();
         }
-        return new Poly((F[])(new Field[]{}));
+        
+        return new Poly((F[])(new Field[]{(F)this.coef[0].addIdentity()}));
     }
     public Ring addInverse() { //Unlike PolyDbl there is no convenient way to multiply every element by -1
         F[] tempCoef = this.coef.clone();
