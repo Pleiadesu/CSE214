@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=BooleanAlgebra
+comment1.params=a
+comment1.target=BooleanAlgebra\ or(BooleanAlgebra)
+comment2.params=a
+comment2.target=BooleanAlgebra\ and(BooleanAlgebra)
+comment3.params=
+comment3.target=BooleanAlgebra\ not()
+comment4.params=
+comment4.target=BooleanAlgebra\ orIdentity()
+comment5.params=
+comment5.target=BooleanAlgebra\ andIdentity()
+comment6.params=a
+comment6.target=boolean\ isEqual(BooleanAlgebra)
+numComments=7

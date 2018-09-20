@@ -12,18 +12,23 @@ public class Subset<E extends Comparable<E>> implements BooleanAlgebra {
     //interface BooleanAlgebra
     public BooleanAlgebra or(BooleanAlgebra a) {
         //TODO: return the union as a Subset
+        return new Subset((SetImpl)subset.union(((Subset)a).subset), univ);
     }
     public BooleanAlgebra and(BooleanAlgebra a) {
         //TODO: return the intersection as a Subset
+        return new Subset((SetImpl)subset.intersection(((Subset)a).subset), univ);
     }
     public BooleanAlgebra not() {
         //TODO: return univ - subset as a Subset
+        return new Subset(univ.difference(subset), univ);
     }
     public BooleanAlgebra orIdentity() {
         //TODO: return the empty set as a Subset
+        return new Subset(univ, univ);
     }
     public BooleanAlgebra andIdentity() {
         //TODO: return univ as a Subset
+        return new Subset(new SetImpl(), univ);
     }
     public boolean isEqual(BooleanAlgebra a) {
         Subset<E> s = castOrThrow(a);

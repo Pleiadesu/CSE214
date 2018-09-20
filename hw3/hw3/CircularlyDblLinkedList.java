@@ -19,6 +19,21 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
             this.head = head; this.curr = curr;
         }
         //TODO: implement Iterator<E>
+        public boolean hasNext(){
+            if(head.prev == this.curr){
+                return false;
+            }
+            return true;
+        }
+        
+        public E next(){
+            if(hasNext()){
+                return (E)curr.next.e;
+            }
+            else{
+                throw new ArrayIndexOutOfBoundsException();
+            }
+        }
     }
     
     protected Node<E> head;
@@ -30,18 +45,83 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         size = 0;
     }
     
+    //toString for debugging
+    public String toString(){
+        String temp = "[";
+        for(int i = 0; i < size; i++){
+            temp += get(i) + ", ";
+        }
+        temp += "]";
+        return temp;
+    }
+    
     //TODO: implement interface List
     public E get(int i) {
         return findNode(i).e;
     }
-
+    
+    public int size(){
+        return size;
+    }
+    
+    public boolean isEmpty(){
+        if(head == null){
+            return true;
+        }
+        return false;
+    }
+    
+    public E set(int i, E e){
+        Node temp = findNode(i);
+        Node newNode = new Node(e, temp.prev, temp.next);
+        temp.prev.next = newNode;
+        temp.next.prev = newNode;
+        return (E)temp.e;
+    }
+    
+    public void add(int i, E e){
+        Node temp = head;
+        for(int j = 0; j < i; j++){
+            temp = temp.next;
+        }
+        Node newNode = new Node(e, temp.prev, temp);
+        temp.prev.next = newNode;
+        temp.prev = newNode;
+        size++;
+    }
+    
+    public E remove(int i){
+        Node temp = findNode(i);
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        size--;
+        return (E)temp.e;
+    }
     //TODO: implement interface Iterable
+    public Iterator<E> iterator(){
+        return new NodeIterator(head, head);
+    }
 
     //helper methods
     protected Node<E> findNode(int i) {
         if(i < 0 || i >= size)
             throw new IndexOutOfBoundsException("invalid index: " + i + " is not in [ 0, " + size + ")");
-        
-        //TODO: find the node at index i and return it 
+        Node temp = head.next;
+        for(int j = 0; j < i; j++){
+            temp = temp.next;
+        }
+        return temp;
     }
+    /*
+    public boolean isIn(E e) {
+        Node temp = head;
+        for(int i = 0; i < size; i++){
+            temp = temp.next;
+            if(e.compareTo(temp.e) == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    */
 }

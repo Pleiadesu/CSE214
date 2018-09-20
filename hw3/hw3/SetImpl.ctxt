@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=SetImpl
+comment1.params=
+comment1.target=SetImpl()
+comment10.params=
+comment10.target=void\ sort()
+comment2.params=set
+comment2.target=SetImpl(SetImpl)
+comment3.params=arr
+comment3.target=SetImpl(java.lang.Comparable[])
+comment4.params=set
+comment4.target=boolean\ isEqual(Set)
+comment5.params=set
+comment5.target=Set\ union(Set)
+comment6.params=set
+comment6.target=Set\ intersection(Set)
+comment7.params=set
+comment7.target=Set\ difference(Set)
+comment8.params=
+comment8.target=CircularlyDblLinkedList\ copyList()
+comment9.params=
+comment9.target=void\ dedupe()
+numComments=11

@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Subset
+comment1.params=subset\ univ
+comment1.target=Subset(Set,\ Set)
+comment2.params=a
+comment2.target=BooleanAlgebra\ or(BooleanAlgebra)
+comment3.params=a
+comment3.target=BooleanAlgebra\ and(BooleanAlgebra)
+comment4.params=
+comment4.target=BooleanAlgebra\ not()
+comment5.params=
+comment5.target=BooleanAlgebra\ orIdentity()
+comment6.params=
+comment6.target=BooleanAlgebra\ andIdentity()
+comment7.params=a
+comment7.target=boolean\ isEqual(BooleanAlgebra)
+comment8.params=a
+comment8.target=Subset\ castOrThrow(BooleanAlgebra)
+numComments=9
