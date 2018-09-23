@@ -4,6 +4,9 @@ comment1.params=
 comment1.target=CircularlyDblLinkedList()
 comment10.params=i
 comment10.target=CircularlyDblLinkedList.Node\ findNode(int)
+comment11.params=
+comment11.target=void\ endPointer()
+comment11.text=\r\n\ \ \ \ public\ boolean\ isIn(E\ e)\ {\r\n\ \ \ \ \ \ \ \ Node\ temp\ \=\ head;\r\n\ \ \ \ \ \ \ \ for(int\ i\ \=\ 0;\ i\ <\ size;\ i++){\r\n\ \ \ \ \ \ \ \ \ \ \ \ temp\ \=\ temp.next;\r\n\ \ \ \ \ \ \ \ \ \ \ \ if(e.compareTo(temp.e)\ \=\=\ 0){\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ true;\r\n\ \ \ \ \ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ return\ false;\r\n\ \ \ \ }\r\n
 comment2.params=
 comment2.target=java.lang.String\ toString()
 comment3.params=i
@@ -20,4 +23,4 @@ comment8.params=i
 comment8.target=java.lang.Object\ remove(int)
 comment9.params=
 comment9.target=java.util.Iterator\ iterator()
-numComments=11
+numComments=12

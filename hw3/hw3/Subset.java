@@ -24,11 +24,11 @@ public class Subset<E extends Comparable<E>> implements BooleanAlgebra {
     }
     public BooleanAlgebra orIdentity() {
         //TODO: return the empty set as a Subset
-        return new Subset(univ, univ);
+        return new Subset(new SetImpl(), univ);
     }
     public BooleanAlgebra andIdentity() {
-        //TODO: return univ as a Subset
-        return new Subset(new SetImpl(), univ);
+        //TODO: return univ as a Subset        
+        return new Subset(univ, univ);
     }
     public boolean isEqual(BooleanAlgebra a) {
         Subset<E> s = castOrThrow(a);

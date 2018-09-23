@@ -28,70 +28,56 @@ public class SetImpl<E extends Comparable<E>> implements Set<E> {
         return true;
     }
     public Set<E> union(Set<E> set){
-        System.out.println("Calculating Union between:");
-        System.out.println(list + "\nand\n" + ((SetImpl)set).copyList());
         CircularlyDblLinkedList tempList = ((SetImpl)set).copyList();
         for(int i = 0; i < list.size(); i++){
-            System.out.println("Union index: "+i);
             tempList.add(i, list.get(i));
         }
         SetImpl tempSet = new SetImpl();
         tempSet.list = tempList;
+        tempSet.dedupe();
         return tempSet;
     }
     public Set<E> intersection(Set<E> set){
-        CircularlyDblLinkedList tempList = ((SetImpl)set).copyList();
+        CircularlyDblLinkedList tempList = new CircularlyDblLinkedList(), thatList = ((SetImpl)set).copyList();
         for(int i = 0; i < list.size(); i++){
-            boolean contains = true;
-            int rmv_pos = 0;
-            for(int j = 0; j < tempList.size(); j++){
-                if(list.get(i).compareTo((E)tempList.get(j)) != 0){
-                    contains = false;
-                    rmv_pos = j;
-                }
-                else{
+            for(int j = 0; j < thatList.size(); j++){
+                if(list.get(i).compareTo((E)thatList.get(j)) == 0){
+                    tempList.add(tempList.size(), list.get(i));
                     break;
                 }
-            }
-            if(!contains){
-                tempList.remove(rmv_pos);
             }
         }
         SetImpl tempSet = new SetImpl();
         tempSet.list = tempList;
+        tempSet.dedupe();
         return tempSet;
     }
     public Set<E> difference(Set<E> set){
         SetImpl tempRmv = (SetImpl)intersection((SetImpl)set);
-        CircularlyDblLinkedList tempList = new CircularlyDblLinkedList();
-        //make a copy of this.list
-        int f = 0;
-        for(E e: list){
-            tempList.add(f++, e);
-        }
+        CircularlyDblLinkedList tempList = this.copyList();
         //remove every element in tempRmv- that is the intersection- from tempList
-        for(int i = 0; i < tempList.size(); i++){
+        int i = 0;
+        while(i < tempList.size()){
             for(int j = 0; j < tempRmv.list.size(); j++){
-                if(((E)tempList.get(i)).compareTo((E)tempRmv.list.get(j)) != 0){
+                if(((E)tempList.get(i)).compareTo((E)tempRmv.list.get(j)) == 0){
                     tempList.remove(i);
-                }
-                else{
+                    i--;
                     break;
-                }
+                }                
             }
+            i++;
         }
         SetImpl tempSet = new SetImpl();
         tempSet.list = tempList;
+        tempSet.dedupe();
         return tempSet;
     }
     
     //helper methods
     private CircularlyDblLinkedList<E> copyList() {
-        System.out.println("Copying list: " + list);
         CircularlyDblLinkedList<E> dst = new CircularlyDblLinkedList<E>();
         int i = 0;
         for(E e : list){
-            //System.out.println("Element being copied: "+e);
             dst.add(i++, e);
         }
         return dst;
@@ -103,10 +89,10 @@ public class SetImpl<E extends Comparable<E>> implements Set<E> {
         for(int currentPos = 0; currentPos < list.size() - 1; currentPos++){
             for(int comparePos = currentPos + 1; comparePos < list.size(); comparePos++){
                 if(list.get(currentPos).equals(list.get(comparePos))){
-                    break;
+                    list.remove(comparePos);
                 }
                 else{
-                    list.remove(comparePos);
+                    break;
                 }
             }
         }
@@ -117,18 +103,17 @@ public class SetImpl<E extends Comparable<E>> implements Set<E> {
     }
     private void sort() {   //insertion-sort
         //TODO: using the insertion-sort, sort list
-        if(list.size() <= 0){
-            throw new ArrayIndexOutOfBoundsException("List being sorted is empty");
-        }
-        for(int currentPos = 1; currentPos < list.size(); currentPos++){
-            int tempPos = currentPos;
-            while(tempPos > 0 && list.get(tempPos - 1).compareTo(list.get(tempPos)) > 0){
-                E temp = list.get(tempPos);
-                list.set(tempPos, list.get(tempPos - 1));
-                list.set(tempPos - 1, temp);
-                // make list[tempPos] = list[tempPos - 1];
-                // make list[tempPos - 1] = temp;
-                tempPos--;
+        if(list.size() > 0){
+            for(int currentPos = 1; currentPos < list.size(); currentPos++){
+                int tempPos = currentPos;
+                while(tempPos > 0 && list.get(tempPos - 1).compareTo(list.get(tempPos)) > 0){
+                    E temp = list.get(tempPos);
+                    list.set(tempPos, list.get(tempPos - 1));
+                    list.set(tempPos - 1, temp);
+                    // make list[tempPos] = list[tempPos - 1];
+                    // make list[tempPos - 1] = temp;
+                    tempPos--;
+                }
             }
         }
     }

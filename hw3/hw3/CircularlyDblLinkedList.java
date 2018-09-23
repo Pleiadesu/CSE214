@@ -20,7 +20,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         }
         //TODO: implement Iterator<E>
         public boolean hasNext(){
-            if(head.prev == this.curr){
+            if(curr.next == head){
                 return false;
             }
             return true;
@@ -28,10 +28,11 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         
         public E next(){
             if(hasNext()){
-                return (E)curr.next.e;
+                curr = curr.next;
+                return (E)curr.e;
             }
             else{
-                throw new ArrayIndexOutOfBoundsException();
+                throw new ArrayIndexOutOfBoundsException("There are no elements left in this list");
             }
         }
     }
@@ -41,7 +42,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
 
     //constructor
     public CircularlyDblLinkedList() {
-        head = new Node<E>();
+        head = new Node<E>(); 
         size = 0;
     }
     
@@ -65,7 +66,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
     }
     
     public boolean isEmpty(){
-        if(head == null){
+        if(head.next == head){
             return true;
         }
         return false;
@@ -80,7 +81,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
     }
     
     public void add(int i, E e){
-        Node temp = head;
+        Node temp = head.next;
         for(int j = 0; j < i; j++){
             temp = temp.next;
         }
@@ -88,6 +89,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         temp.prev.next = newNode;
         temp.prev = newNode;
         size++;
+        endPointer();
     }
     
     public E remove(int i){
@@ -95,6 +97,7 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         temp.prev.next = temp.next;
         temp.next.prev = temp.prev;
         size--;
+        endPointer();
         return (E)temp.e;
     }
     //TODO: implement interface Iterable
@@ -124,4 +127,12 @@ public class CircularlyDblLinkedList<E> implements List<E>, Iterable<E> {
         return false;
     }
     */
+   
+    public void endPointer(){
+        if(size > 0){
+            Node tempNode = findNode(size - 1);
+            tempNode.next = head;
+            head.prev = tempNode;
+        }
+    }
 }

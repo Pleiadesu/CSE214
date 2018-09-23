@@ -32,7 +32,6 @@ public class UnitTest {
         return x.isEqual(a);
     }
     public static boolean testAndIdentity(BooleanAlgebra a) {
-        System.out.println("testAndIdentity...");
         BooleanAlgebra x = a.and(a.andIdentity());
         return x.isEqual(a);
     }
