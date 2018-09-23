@@ -88,7 +88,7 @@ public class SetImpl<E extends Comparable<E>> implements Set<E> {
         sort();
         for(int currentPos = 0; currentPos < list.size() - 1; currentPos++){
             for(int comparePos = currentPos + 1; comparePos < list.size(); comparePos++){
-                if(list.get(currentPos).equals(list.get(comparePos))){
+                if(list.get(currentPos).compareTo(list.get(comparePos)) == 0){
                     list.remove(comparePos);
                 }
                 else{
