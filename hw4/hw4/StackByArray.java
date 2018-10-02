@@ -15,7 +15,13 @@ public class StackByArray<E> implements Stack<E> {
         arr = (E[])new Object[capacity];
         sp = 0;
     }
-    
+    public String toString(){
+        String returnStr = "";
+        for(E e:arr){
+            returnStr = returnStr + e;
+        }
+        return returnStr;
+    }
     //interface Stack
     public int size() {
         return sp;
