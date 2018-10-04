@@ -20,22 +20,20 @@ public class Expression {
     }
     
     public static String infixToPostfix(String expr) {
-        //TODO: implement this method
+        Scanner scan = new Scanner(expr);
         String postfix = "";
         StackByArray<Character> ops_stack = new StackByArray();
         ops_stack.push('#');
-        String INT_LIST = "1234567890";
-        for(int i = 0; i < expr.length(); i++){
-            char char_at = expr.charAt(i);
-            System.out.println("char_at: "+char_at);
-            if(INT_LIST.contains(Character.toString(char_at))){
-                postfix = postfix + Character.toString(char_at);
+        for(String tmp: scan){
+            char char_at = tmp.charAt(0);
+            if(Scanner.isDigit(char_at)){
+                postfix += tmp + " ";
             }
             else{
                 while(!ops_stack.isEmpty() && act[ops_stack.top()][char_at] != Action.Push){
                     char temp_top = ops_stack.pop();
                     if(temp_top != '(' && temp_top != ')' && temp_top != '#'){
-                        postfix = postfix + temp_top;
+                        postfix += temp_top + " ";
                     }
                 }
                 ops_stack.push(char_at);
@@ -45,37 +43,28 @@ public class Expression {
     }
     
     public static double evalPostfixExpr(String expr) {
-        //TODO: implement this method
+        Scanner scan = new Scanner(expr);
         StackByArray<Double> res_stack = new StackByArray();
-        String INT_LIST = "1234567890";
-        for(int i = 0; i < expr.length(); i++){
-            String char_at = Character.toString(expr.charAt(i));
-            System.out.println("char_at: "+char_at);
-            if(INT_LIST.contains(char_at)){
-                res_stack.push(Double.parseDouble(char_at));
+        for(String tmp: scan){
+            Character char_at = tmp.charAt(0);
+            if(Scanner.isDigit(char_at)){
+                res_stack.push(Double.parseDouble(tmp));
             }
-            else{
-                System.out.println("res_stack: "+res_stack);
+            else if(!char_at.equals('$')){
                 Double operandB = res_stack.pop();
                 Double operandA = res_stack.pop();
-                System.out.println("operandA: "+operandA+"\noperandB: "+operandB);
-                if(char_at.equals("+")){        
-                    System.out.println("result: "+(operandA + operandB));
+                if(char_at.equals('+')){        
                     res_stack.push(operandA + operandB);
                 }
-                else if(char_at.equals("-")){
-                    System.out.println("result: "+(operandA - operandB));
+                else if(char_at.equals('-')){
                     res_stack.push(operandA - operandB);
                 }
-                else if(char_at.equals("*")){
-                    System.out.println("result: "+(operandA * operandB));
+                else if(char_at.equals('*')){
                     res_stack.push(operandA * operandB);
                 }
-                else if(char_at.equals("/")){
-                    System.out.println("result: "+(operandA / operandB));
+                else if(char_at.equals('/')){
                     res_stack.push(operandA / operandB);
-                }
-                    
+                }                  
             }
         }
         return res_stack.top();

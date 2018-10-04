@@ -26,7 +26,7 @@ public class SetImpl<E extends Comparable<E>> implements Set<E> {
             if(list.get(i).compareTo(s.list.get(i)) != 0)
                 return false;
         return true;
-    }
+    }   
     public Set<E> union(Set<E> set){
         CircularlyDblLinkedList tempList = ((SetImpl)set).copyList();
         for(int i = 0; i < list.size(); i++){
