@@ -20,7 +20,7 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
         }
         public boolean hasNext() {
             //TODO: implement this method
-            if(curr.next != tail){
+            if(curr != tail){
                 return true;
             }
             return false;
