@@ -11,6 +11,9 @@ public class SnakeWorld {
         public int x, y;
         public Pos(int x, int y) { this.x = x; this.y = y; }
         public boolean equals(Pos pos) { return x == pos.x && y == pos.y; }
+        public String toString(){//debugging
+            return "(" + x + ", " + y + ")";
+        }
     }
     
     //class Apple
@@ -35,6 +38,12 @@ public class SnakeWorld {
             //      0 <= x < WIDTH,
             //      0 <= y < HEIGHT, and
             //      it does not hit the wall nor the snake
+            Pos newPos = new Pos(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+            while(hit(snake.getPos(), newPos) || hit(wall.getPos(), newPos)){
+                newPos = new Pos(rand.nextInt(WIDTH), rand.nextInt(HEIGHT)); //if the selected spot is occupied keep looking for empty positions
+            }
+            pos = newPos;
+            System.out.println("Num. apples made: " + (createCount + 1));
             return createCount++;
         }
         public int getCount() { return createCount; }
@@ -52,21 +61,28 @@ public class SnakeWorld {
             
             for(int x = 0; x < WIDTH; x++) {
                 //TODO: add (x, 0) and (x, HEIGHT-1) to pos
+                pos.addFirst(new Pos(x, 0));
+                pos.addFirst(new Pos(x, HEIGHT-1));
             }
             for(int y = 0; y < HEIGHT; y++) {
                 //TODO: add (0, y) and (WIDTH-1, y) to pos
+                pos.addFirst(new Pos(0, y));
+                pos.addFirst(new Pos(WIDTH-1, y));
             }
             for(int k = 0; k < n; k++) {
                 int x = (k+1)*WIDTH/(n+1);
                 for(int y = 0; y < HEIGHT*2/5; y++) {
                     //TODO add(x, y) to pos
+                    pos.addFirst(new Pos(x, y));
                 }
                 for(int y = HEIGHT*3/5; y < HEIGHT; y++) {
                     //TODO add(x, y) to pos
+                    pos.addFirst(new Pos(x, y));
                 }
             }
         }
         public Iterable<Pos> getPos() {
+            System.out.println("Getting wall pos, size "+pos.size());
             return pos;
         }
     }
@@ -87,28 +103,51 @@ public class SnakeWorld {
             dir = 1; //E
             //TODO: initialize pos
             //      add Pos(1, HEIGHT/2) to pos
+            pos = new CircularlyListDeque<Pos>();
+            pos.addFirst(new Pos(1, HEIGHT/2));
         }
         public void turnRight() {
             //TODO: rotate dir in this order: 0 -> 1 -> 2 -> 3 -> 0 -> 1 ...
+            dir = (dir + 1) % 4;
         }
         public void turnLeft() {
             //TODO: rotate dir in this order: 0 -> 3 -> 2 -> 1 -> 0 -> 3 ...
+            dir = (dir + 3) % 4;
         }
         public Pos nextHeadPos() {
             //TODO: get the head position from pos
             //      add DX[dir] and DY[dir] to the head
-            return null;
+            Pos temp = pos.first();
+            return new Pos(temp.x + DX[dir], temp.y + DY[dir]);
         }
         public void move() {
             //TODO: add nextHeadPos() to pos
             //      if incr > 0, decrease incr
             //      otherwise, remove tail from pos
+            pos.addFirst(nextHeadPos());
+            if(incr > 0){
+                incr--;
+            }
+            else{
+                pos.removeLast();
+            }
         }
         public void grow() {
             //TODO: increase incr by pos.size()
+            incr += pos.size();
+        }
+        public int size(){ //replace later with incr
+            return pos.size();
         }
         public Iterable<Pos> getPos() {
             //TODO: return pos
+            System.out.println("Getting Snake pos, size "+pos.size());
+            System.out.printf("Snake pos: ");
+            for(Pos p: pos){
+                System.out.printf(p + ", ");
+            }
+            System.out.println();
+            return pos;
         }
     }
     
@@ -145,12 +184,27 @@ public class SnakeWorld {
         //hit the wall or bite itself
         //TODO: using the hit method below, if head hit the wall or
         //      hit the snake itself, set gameOver to true and return true
+        if(hit(getWallPos(), head) || hit(getSnakePos(), head)){
+            gameOver = true;
+            return true;
+        }
         
         //eat apple
         //TODO: if the head hit the apple
         //      1. increase score by the snake's size
         //      2. if apple.getCount() == MAX_APPLES call newStage()
         //         otherwise, grow snake and create a new apple
+        if(getApplePos().equals(head)){//head hit apple
+            score += snake.size();
+            System.out.println("Score: "+score);
+            if(apple.getCount() == MAX_APPLES){
+                newStage();
+            }
+            else{
+                snake.grow();
+                apple.create();
+            }
+        }
         
         //move to the next position
         snake.move();
@@ -161,10 +215,15 @@ public class SnakeWorld {
         stageCount++;
         wall.init(stageCount);
         snake.init();
-        apple.init();
+        apple.init(); 
     }
     private static boolean hit(Iterable<Pos> list, Pos pos) {
         //TODO: return if list has has a position equal to pos
+        for(Pos p: list){
+            if(p.equals(pos)){
+                return true;
+            }
+        }
         return false;
     }
 }

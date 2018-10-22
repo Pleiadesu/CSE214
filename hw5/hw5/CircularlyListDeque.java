@@ -4,11 +4,43 @@ import java.util.Iterator;
 
 public class CircularlyListDeque<E> implements Deque<E> {
     private CircularlyLinkedList<E> list;
+    private int size;
     
     public CircularlyListDeque() {
         list = new CircularlyLinkedList<E>();
     }
     //TODO: implement all methods of Deque<E>
+    public int size(){
+        return size;
+    }
+    public boolean isEmpty(){
+        return size == 0;
+    }
+    public E first(){
+        return list.first();
+    }
+    public E last(){
+        return list.last();
+    }
+    public void addFirst(E e){
+        size++;
+        list.addFirst(e);
+    }
+    public void addLast(E e){
+        size++;
+        list.addLast(e);      
+    }
+    public E removeFirst(){
+        size--;
+        return list.removeFirst();
+    }
+    public E removeLast(){
+        size--;
+        return list.removeLast();       
+    }
+    public Iterator<E> iterator(){
+        return list.iterator();
+    }
     
     private static void onFalseThrow(boolean b) {
         if(!b)
@@ -31,8 +63,9 @@ public class CircularlyListDeque<E> implements Deque<E> {
         dq.addLast(5);
         
         int j = 1;
-        for(int i : dq)
-            onFalseThrow(i == j++);
+        for(int i : dq){
+            System.out.println("Testing Deque: "+i);
+            onFalseThrow(i == j++);}
         onFalseThrow(dq.size() == 5);
         onFalseThrow(dq.isEmpty() == false);
 

@@ -20,7 +20,7 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
         }
         public boolean hasNext() {
             //TODO: implement this method
-            if(curr != tail){
+            if(curr != tail.next){
                 return true;
             }
             return false;
@@ -37,7 +37,7 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
     private Node<E> tail;
     private int size;
     
-    public CircularlyLinkedList() {/*size = 0; (?)*/}
+    public CircularlyLinkedList() {}
     
     //interface Iterable
     public Iterator<E> iterator() {
@@ -116,8 +116,9 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
         list.addLast(5);
 
         int j = 1;
-        for(int i : list)
-            onFalseThrow(i == j++);
+        for(int i : list){
+            System.out.println("Testing CLL: "+i);
+            onFalseThrow(i == j++);}
         
         for(int i = 1; i <= 3; i++)
             onFalseThrow(i == list.removeFirst());
