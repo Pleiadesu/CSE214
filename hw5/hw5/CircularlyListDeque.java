@@ -11,10 +11,10 @@ public class CircularlyListDeque<E> implements Deque<E> {
     }
     //TODO: implement all methods of Deque<E>
     public int size(){
-        return size;
+        return list.size();
     }
     public boolean isEmpty(){
-        return size == 0;
+        return list.size() == 0;
     }
     public E first(){
         return list.first();
@@ -23,19 +23,15 @@ public class CircularlyListDeque<E> implements Deque<E> {
         return list.last();
     }
     public void addFirst(E e){
-        size++;
         list.addFirst(e);
     }
     public void addLast(E e){
-        size++;
         list.addLast(e);      
     }
     public E removeFirst(){
-        size--;
         return list.removeFirst();
     }
     public E removeLast(){
-        size--;
         return list.removeLast();       
     }
     public Iterator<E> iterator(){
@@ -64,7 +60,6 @@ public class CircularlyListDeque<E> implements Deque<E> {
         
         int j = 1;
         for(int i : dq){
-            System.out.println("Testing Deque: "+i);
             onFalseThrow(i == j++);}
         onFalseThrow(dq.size() == 5);
         onFalseThrow(dq.isEmpty() == false);
