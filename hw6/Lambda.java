@@ -1,4 +1,4 @@
- 
+
 
 public class Lambda {
     public static final double EPS = 1e-5;
@@ -23,6 +23,19 @@ public class Lambda {
         public double func(double x);
         public default double solve(double xl, double xr) {
             /*TODO: implement this function recursively*/
+            m = (x1 + xr) / 2;
+            if(Math.abs(x1 - xr) < EPS){
+                return x1;
+            }
+            else if(func(x1) * func(m) <= 0){
+                return solve(a, m);
+            }
+            else if(func(xr) * func(m) <= 0){
+                return solve(m, xr);
+            }
+            else{
+                throw new Exception();
+            }
         }
     }
     
@@ -38,19 +51,19 @@ public class Lambda {
         fact = (self, a) -> a <= 1 ? a : a * self.apply(a - 1);
         
     public static Func2<Func2<?, Integer, Integer>, Integer, Integer> 
-        fact2 = (self, a) -> /*TODO: implement this function*/
+        fact2 = (self, a) -> a <= 1 ? a : a * self.apply(a - 1);
     
     public static Func<Func<Double, Double>, Func<Double, Double>> 
         derivative = f -> x -> (f.apply(x + EPS) - f.apply(x))/EPS;
         
     public static Func<Func<Double, Double>, Func<Double, Double>> 
-        toNewton = f -> /*TODO: implement this function*/
+        toNewton = f -> -1 * (f.apply() - derivative.apply(f).apply() * () / derivative.apply(f).apply();
     
     public static Rec2<?, Func<Double, Double>, Double, Double> 
-        fixedPoint = (self, f, x0) -> /*TODO: implement this function*/
+        fixedPoint = (self, f, x0) -> f.apply(x0) - x0 < EPS ? x0 : self.apply(f, x0);
     
     public static Rec<?, Func<Double, Double>, Func<Double, Double>> 
-        fixedPoint2 = (self, f) -> x0 -> /*TODO: implement this function*/ 
+        fixedPoint2 = (self, f) -> x0 -> f.apply(x0) - x0 < EPS ? x0 : self.apply(x0); 
 
     public static Func<Double, Double> sqrt = x -> ((Newton) y -> y * y - x).solve(1.0);
     
