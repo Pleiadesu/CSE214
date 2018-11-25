@@ -44,7 +44,7 @@ public class RBTree<E extends Comparable<E>> {
         }
         else {              //not found; add e
             Node<E> fresh = new Node<E>(e, true/*isRed*/, null, null, null);
-            setParent(fresh, node, cmp < 0/*asLeftChild*/);
+            setParent(fresh, node, cmp < 0/*asleft*/);
             size++;
             rebalanceInsert(fresh);
             return e;
@@ -113,19 +113,88 @@ public class RBTree<E extends Comparable<E>> {
     
     protected static final boolean AS_LEFT_CHILD = true;
     protected static final boolean AS_RIGHT_CHILD = false;
-    protected void setParent(Node<E> node, Node<E> parent, boolean asLeftChild) {
+    protected void setParent(Node<E> node, Node<E> parent, boolean asleft) {
         if(node != null)
             node.parent = parent;
         if(parent != null) {
-            if(asLeftChild)  parent.left  = node;
+            if(asleft)  parent.left  = node;
             else             parent.right = node;
         }
     }
+    
+    protected void rotateLeft(Node<E> x){
+		Node<E> node = x.parent;
+        Node<E> y = node.right;
+        node.right = y.left;
+        if(y.left != null){
+            y.left.parent = node;
+        }
+        if(node.parent == null)
+            this.root = y;
+        else if(node == node.parent.left){
+            node.parent.left = y;
+        }
+        else{
+            node.parent.right = y;
+        }
+        y.left = node;
+        y.parent = node.parent;
+        node.parent = y;
+    }
+    
+    protected void rotateRight(Node<E> x){
+		Node<E> node = x.parent;
+        Node<E> y = node.left;
+        node.left = y.right;
+        if(y.right != null){
+            y.right.parent = node;
+        }
+        if(node.parent == null)
+            this.root = y;
+        else if(node == node.parent.left){
+            node.parent.left = y;
+        }
+        else{
+            node.parent.right = y;
+        }
+        y.right = node;
+        y.parent = node.parent;
+        node.parent = y;
+    }
+    
     protected void rotate(Node<E> node) {
         Node<E> x = node;
         Node<E> y = x.parent;   //assumed to be exist
         Node<E> z = y.parent;   //may be null
         
+        //if(z == null){
+        if(y.right == x){
+            System.out.println("Rotating left");
+            rotateLeft(x);
+            System.out.println("Rotate success? "+(x.left == y));
+        }
+        else{
+            System.out.println("Rotating right");
+            rotateRight(x);
+            System.out.println("Rotate success? "+(x.right == y));
+        }
+        //}
+        /*else{
+            if(z.right == y && y.right == x){
+                rotateLeft(y);
+            }
+            else if(z.left == y && y.left == x){
+                rotateRight(y);
+            }
+            else if(z.left == y && y.right == x){
+                rotateRight(x);
+                rotateLeft(x);
+            }
+            else{
+                rotateLeft(x);
+                rotateRight(x);
+            }
+        }*/
         //TODO: implement this method
     }
     
@@ -133,8 +202,20 @@ public class RBTree<E extends Comparable<E>> {
         Node<E> x = node;
         Node<E> y = x.parent;
         Node<E> z = y.parent;
+        System.out.println("x: "+x.e+" parent: "+y.e+" grandparent: "+z.e);
         
         //TODO: implement this method
+        if((z.right == y && y.right == x) || (z.left == y && y.left == x)){
+			System.out.println("Triple one direction");
+            rotate(y);
+            return y;
+        }
+        else{
+			System.out.println("kink");
+            rotate(x);
+            rotate(x);
+            return x;
+        }
     }
     
     protected void fixDoubleRed(Node<E> node) {
@@ -142,10 +223,30 @@ public class RBTree<E extends Comparable<E>> {
             return;
         Node<E> parent = node.parent;
         Node<E> uncle = sibling(parent);
+        System.out.println("parent is "+parent.e);
         
         //TODO: implement this method
         //      case 1: malformed 4 node
         //      case 2: overflow
+        if(uncle == null || !uncle.isRed){
+            System.out.println("uncle is black");
+            Node base = restructure(node);
+            base.isRed = false;
+            base.left.isRed = true;
+			base.right.isRed = true;
+        }
+        else if(uncle != null){
+            System.out.println("uncle is red");
+            parent.isRed = false;
+            uncle.isRed = false;
+            if(parent.parent != this.root){
+                parent.parent.isRed = true;
+                fixDoubleRed(parent.parent);
+                //fixDoubleRed(parent);
+            }
+            //fix double black?
+        }
+        
     }
 
     protected void rebalanceInsert(Node<E> node) {
@@ -158,12 +259,52 @@ public class RBTree<E extends Comparable<E>> {
     protected void fixDoubleBlack(Node<E> node) {
         Node<E> z = node.parent;
         Node<E> y = sibling(node);
-        
+        boolean zWasRed = isRed(z);
         //TODO: implement this method
         //case 1: transfer
+        if(y == null) return;
+		System.out.println("y "+y.e);
+		if(y.left != null){
+			System.out.println("y.left "+y.left.e);
+		}
+		if(y.right != null){
+			System.out.println("y.right "+y.right.e);
+		}
+        Node<E> x = isRed(y.left)? y.left: y.right != null? y.right:null;
+        if(isBlack(y) && isRed(x)){
+			System.out.println("case 1");
+            Node base = restructure(x);
+            base.isRed = zWasRed;
+            base.left.isRed = false;
+            base.right.isRed = false;
+            System.out.println("coloring "+base.left.e+" black");
+            System.out.println("coloring "+base.right.e+" black");
+        }   
         //case 2: fusion
+        else if(isBlack(y) && isBlack(y.left) && isBlack(y.right)){
+			System.out.println("case 2");
+            y.isRed = true;
+            z.isRed = false;
+            System.out.println("coloring "+y.e+" red");
+            System.out.println("coloring "+z.e+" black");
+            if(!zWasRed){
+                fixDoubleBlack(z);
+            }
+        }
         //case 3: re-orientation
+        else if(isRed(y)){
+			System.out.println("case 3");
+            rotate(y);
+            y.isRed = false;
+            z.isRed = true;
+            System.out.println("coloring "+y.e+" black");
+            System.out.println("coloring "+z.e+" red");
+        }
     }
+    
+    public String asTxt(Node node){
+		
+	}
     
     // node is a promoted child of a deleted node or
     // a to be deleted node if it is external
@@ -184,7 +325,7 @@ public class RBTree<E extends Comparable<E>> {
         if(node == root)
             root = child;
         else 
-            setParent(child, node.parent, node == node.parent.left/*asLeftChild*/);
+            setParent(child, node.parent, node == node.parent.left/*asleft*/);
         size--;
         return node.e;
     }
@@ -211,14 +352,16 @@ public class RBTree<E extends Comparable<E>> {
         RBTree<Integer> rbtree = new RBTree<>();
         
         //increasing order
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 10; i++){
             rbtree.insert(i);
+		}
         /*test*/ {
             int[] num = new int[] { 3, 1, 0, 2, 5, 4, 7, 6, 8, 9 };
             boolean[] red = new boolean[10];
             red[6] = red[9] = true;
             int k = 0;
             for(Node<Integer> n : rbtree.preorder()) {
+                System.out.println("Insert test "+n.e);
                 onFalseThrow(n.e == num[k]);
                 onFalseThrow(n.isRed == red[k++]);
             }
@@ -232,6 +375,9 @@ public class RBTree<E extends Comparable<E>> {
             red[2] = red[4] = true;
             int k = 0;
             for(Node<Integer> n : rbtree.preorder()) {
+				System.out.println("Delete test "+n.e);
+				System.out.println("Target "+num[k]);
+				System.out.println("color is red? "+n.isRed);
                 onFalseThrow(n.e == num[k]);
                 onFalseThrow(n.isRed == red[k++]);
             }
@@ -305,3 +451,4 @@ public class RBTree<E extends Comparable<E>> {
         System.out.println("Success: random order");
     }
 }
+  

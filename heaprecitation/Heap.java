@@ -28,21 +28,23 @@ public class Heap<E extends Comparable<E>> {
                 tmp[i] = arr[i];
             arr = tmp;
         }
-        
-        //TODO: append e to arr and call upheap
         arr[size] = e;
         size++;
         upheap(size-1);
+        
+        //TODO: - add e at arr[size], increase size
+        //      - call upheap
     }
     public E remove() {
         if(size <= 0)
             throw new IndexOutOfBoundsException("Empty heap");
-        
-        //TODO: remove arr[0] and call downheap
         E temp = arr[0];
         arr[0] = arr[size-1];
         size--;
         downheap(0);
+        
+        //TODO: - save arr[0], copy arr[size-1] to arr[0], decrease size
+        //      - call downheap
         return temp;
     }
     protected int parent(int i)       { return (i - 1) / 2; }
@@ -56,6 +58,11 @@ public class Heap<E extends Comparable<E>> {
         }
         swap(i, p);
         upheap(p);
+        
+        //TODO: implement upheap
+        // - if i is root or arr[p] <= arr[i], return
+        // - swap i and parent
+        // - recursively call upheap with parent
     }
     protected void downheap(int i) {
         int l = left(i);
@@ -72,6 +79,12 @@ public class Heap<E extends Comparable<E>> {
         }
         swap(i, c);
         downheap(c);
+        //TODO: implement downheap
+        // - if l >= size, return
+        // - if r >= size, c is l
+        // - otherwise, c is the smaller of r and l
+        // - if arr[c] >= arr[i], return
+        // - otherwise, swap i and c and call downheap again
     }
     
     //for the test code
@@ -85,27 +98,11 @@ public class Heap<E extends Comparable<E>> {
     public static void main(String[] args) {
         Heap<Integer> heap = new Heap<Integer>();
         int[] arr = new int[] {3, 5, 2, 4, 1, 8, 7, 6, 0, 9 };
-        
-        //test add
-        //
         for(int i = 0; i < 10; i++)
             heap.add(arr[i]);
-        int[] ord = new int[] { 0, 1, 3, 2, 4, 8, 7, 6, 5, 9 };
+        
         for(int i = 0; i < 10; i++)
-            onFalseThrow(heap.get(i) == ord[i]);
-        System.out.println("Success: add");
-        
-        //test remove
-        //
-        for(int i = 0; i < 5; i++)
-            onFalseThrow(heap.remove() == i);
-        
-        ord = new int[] { 5, 7, 6, 8, 9 };
-        for(int i = 0; i < 5; i++)
-            onFalseThrow(heap.get(i) == ord[i]);
-        
-        for(int i = 0; i < 5; i++)
-            onFalseThrow(heap.remove() == i + 5);
-        System.out.println("Success: remove");
+            System.out.print(heap.remove() + ", ");
+        System.out.println();
     }
 }
