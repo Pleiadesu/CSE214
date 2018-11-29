@@ -20,9 +20,22 @@ public class RBTreeQueue<E extends Comparable<E>> implements Queue<E> {
     }
     public E dequeue() {
         //TODO: implement this method
-        rbTree.delete(rbTree.root().getElement());
+        return rbTree.delete(rbTree.min());
     }
     public E first() {
         //TODO: implement this method
+        return rbTree.min();
     }
+    public static void main(String[] args){
+		RBTreeQueue test = new RBTreeQueue();
+		test.enqueue("a");
+		test.enqueue("b");
+		test.enqueue("c");
+		test.enqueue("d");
+		test.enqueue("e");
+		while(!test.isEmpty()){
+			System.out.println(test.first());
+			System.out.println(test.dequeue());
+		}
+	}
 }

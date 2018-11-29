@@ -169,14 +169,10 @@ public class RBTree<E extends Comparable<E>> {
         
         //if(z == null){
         if(y.right == x){
-            System.out.println("Rotating left");
             rotateLeft(x);
-            System.out.println("Rotate success? "+(x.left == y));
         }
         else{
-            System.out.println("Rotating right");
             rotateRight(x);
-            System.out.println("Rotate success? "+(x.right == y));
         }
         //}
         /*else{
@@ -202,16 +198,13 @@ public class RBTree<E extends Comparable<E>> {
         Node<E> x = node;
         Node<E> y = x.parent;
         Node<E> z = y.parent;
-        System.out.println("x: "+x.e+" parent: "+y.e+" grandparent: "+z.e);
         
         //TODO: implement this method
         if((z.right == y && y.right == x) || (z.left == y && y.left == x)){
-			System.out.println("Triple one direction");
             rotate(y);
             return y;
         }
         else{
-			System.out.println("kink");
             rotate(x);
             rotate(x);
             return x;
@@ -223,28 +216,23 @@ public class RBTree<E extends Comparable<E>> {
             return;
         Node<E> parent = node.parent;
         Node<E> uncle = sibling(parent);
-        System.out.println("parent is "+parent.e);
         
         //TODO: implement this method
         //      case 1: malformed 4 node
         //      case 2: overflow
         if(uncle == null || !uncle.isRed){
-            System.out.println("uncle is black");
             Node base = restructure(node);
             base.isRed = false;
             base.left.isRed = true;
 			base.right.isRed = true;
         }
         else if(uncle != null){
-            System.out.println("uncle is red");
             parent.isRed = false;
             uncle.isRed = false;
             if(parent.parent != this.root){
                 parent.parent.isRed = true;
                 fixDoubleRed(parent.parent);
-                //fixDoubleRed(parent);
             }
-            //fix double black?
         }
         
     }
@@ -263,48 +251,38 @@ public class RBTree<E extends Comparable<E>> {
         //TODO: implement this method
         //case 1: transfer
         if(y == null) return;
-		System.out.println("y "+y.e);
-		if(y.left != null){
-			System.out.println("y.left "+y.left.e);
+        Node<E> x;
+        if(isRed(y.left)){
+			x = y.left;
 		}
-		if(y.right != null){
-			System.out.println("y.right "+y.right.e);
+		else if(isRed(y.right)){
+			x = y.right;
 		}
-        Node<E> x = isRed(y.left)? y.left: y.right != null? y.right:null;
+		else{
+			x = new Node();
+		}
         if(isBlack(y) && isRed(x)){
-			System.out.println("case 1");
             Node base = restructure(x);
             base.isRed = zWasRed;
             base.left.isRed = false;
             base.right.isRed = false;
-            System.out.println("coloring "+base.left.e+" black");
-            System.out.println("coloring "+base.right.e+" black");
         }   
         //case 2: fusion
         else if(isBlack(y) && isBlack(y.left) && isBlack(y.right)){
-			System.out.println("case 2");
             y.isRed = true;
             z.isRed = false;
-            System.out.println("coloring "+y.e+" red");
-            System.out.println("coloring "+z.e+" black");
             if(!zWasRed){
                 fixDoubleBlack(z);
             }
         }
         //case 3: re-orientation
         else if(isRed(y)){
-			System.out.println("case 3");
             rotate(y);
             y.isRed = false;
             z.isRed = true;
-            System.out.println("coloring "+y.e+" black");
-            System.out.println("coloring "+z.e+" red");
+            fixDoubleBlack(node);
         }
     }
-    
-    public String asTxt(Node node){
-		
-	}
     
     // node is a promoted child of a deleted node or
     // a to be deleted node if it is external

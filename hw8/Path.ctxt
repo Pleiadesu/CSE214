@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Path
+comment1.params=dist\ state
+comment1.target=Path(int[][],\ World.CellState[][])
+comment2.params=x\ y
+comment2.target=int\ cellDist(int,\ int)
+comment3.params=from
+comment3.target=void\ findDistance(Pos)
+comment4.params=
+comment4.target=java.lang.String\ toString()
+comment5.params=args
+comment5.target=void\ main(java.lang.String[])
+numComments=6
