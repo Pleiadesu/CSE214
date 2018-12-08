@@ -4,7 +4,7 @@
         private int[][] dist;
         private World.CellState[][] state;
         private int ny, nx;
-        private static int queueType=2;
+        private static int queueType;
         
         public Path(int[][] dist, World.CellState[][] state) {
             this.dist = dist;
