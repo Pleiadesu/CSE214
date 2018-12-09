@@ -26,11 +26,28 @@ public class Sort {
         //  swap the two numbers
         //until the indexes of the numbers meet
         //recursively call radixSort1 with b-1 and new l, r
+        int tempr = r;
+        int templ = l;
         if(l >= r || b < 0) return;
-        
-        
-        radixSort1(a, l, r, b-1);
-        
+		while(l < r){			
+			while(l<a.length){
+				if(checkBit(a[l], b) == 1){
+					break;
+				}
+				l++;
+			}
+			while(r>=0){	
+				if(checkBit(a[r], b) == 0){
+					break;
+				}
+				r--;
+			}
+			if(l < r){
+				swap(a, l, r);
+			}
+		}
+		radixSort1(a, templ, r, b-1);
+		radixSort1(a, r+1, tempr, b-1);
     }
     public static void radixSort1(int[] a) {
         radixSort1(a, 0, a.length-1, 31);
@@ -69,11 +86,11 @@ public class Sort {
     }
     
     public static void main(String[] args) {
-        /*int[] a = new int[] {3, 1, 2, 4, 5, 7, 9, 0, 8, 6};
-        radixSort1(a);
-        System.out.println("Radix sort 1: " + toString(a));*/
-
         int[] a = new int[] {3, 1, 2, 4, 5, 7, 9, 0, 8, 6};
+        radixSort1(a);
+        System.out.println("Radix sort 1: " + toString(a));
+
+        a = new int[] {3, 1, 2, 4, 5, 7, 9, 0, 8, 6};
         radixSort2(a);
         System.out.println("Radix sort 2: " + toString(a));
     }
