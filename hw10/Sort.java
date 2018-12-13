@@ -31,23 +31,23 @@ public class Sort {
         if(l >= r || b < 0) return;
 		while(l < r){			
 			while(l<a.length){
-				if(checkBit(a[l], b) == 1){
+				if(checkBit(a[l], b) == 1){//find first 1
 					break;
 				}
 				l++;
 			}
 			while(r>=0){	
-				if(checkBit(a[r], b) == 0){
+				if(checkBit(a[r], b) == 0){//find last 0
 					break;
 				}
 				r--;
 			}
 			if(l < r){
-				swap(a, l, r);
+				swap(a, l, r);//swap- 1 > 0, so in this case 1 is supposed to come after 0
 			}
 		}
-		radixSort1(a, templ, r, b-1);
-		radixSort1(a, r+1, tempr, b-1);
+		radixSort1(a, templ, r, b-1); //sort within the 0s
+		radixSort1(a, r+1, tempr, b-1); //sort within the 1s
     }
     public static void radixSort1(int[] a) {
         radixSort1(a, 0, a.length-1, 31);
@@ -67,7 +67,7 @@ public class Sort {
 			int i1 = 0;
 			for(int check: a){
 				if(checkBit(check, i) == 0){
-					i1++;
+					i1++;//index where 1s should be placed- add 1 whenever there's a 0
 				}
 			}
 			for(int j = 0; j < a.length; j++){
@@ -80,7 +80,7 @@ public class Sort {
 			}
 			
 			for(int j = 0; j < b.length; j++){
-				a[j] = b[j];
+				a[j] = b[j];//copy b to a then repeat for every bit from 0~31
 			}
 		}
     }
